@@ -37,3 +37,149 @@ Note:- We can not write id and className attribute in both fragment.
 
 api.github.com/users/gitid
 
+## 6. What is Component Composition?
+
+Component Composition is the practice of calling one component inside another component.
+
+#### Example
+
+```
+function Header() {
+  return <h1>Welcome</h1>;
+}
+
+function App() {
+  return (
+    <div>
+      <Header />  {/* Header component called inside App */}
+    </div>
+  );
+}
+```
+
+## 7. What is Props?
+
+Props (short for "properties") are a mechanism used to pass data from one component to another, typically in a unidirectional (top-down) flow from parent to child.
+
+#### Example
+
+```
+  // Parent passes props
+  <Greeting name="Alice" age={25} />
+
+  // Child receives and uses them
+  function Greeting({ name, age }) {
+    return <h1>Hello, {name}! You are {age} years old.</h1>;
+  }
+```
+
+## 8. what is default props?
+
+Default props in React allow you to define fallback values for a component's properties (props)
+
+#### Example
+```
+function Greeting({ name = "Guest", age = 18 }) {
+  return (
+    <h1>Hello, {name}! You are {age} years old.</h1>
+  );
+}
+
+<Greeting />
+Component call Without passing props:
+```
+
+
+## 9. Why we use Props or characteristics of props?
+
+##### Characteristics
+- Immutable:- a child component cannot modify its own props
+- Unidirectional:- data flows only from parent → child
+- Any type:- strings, numbers, arrays, objects, functions, even JSX
+- Destructured:- commonly destructured in the function signature for cleaner code
+
+##### Usecase
+- Pass Data:- Send data from parent component to child component
+- Reusability:- Same component can be used multiple times with different data
+- Dynamic Content:- Components show different content based on props received
+- Avoid Repetition:- Write the component once, reuse it anywhere
+- Communication:- The only way for a parent to talk to a child component
+
+## 10. What is Children prop?
+ 1. children prop is a special, built-in property that allows you to pass content between the opening and closing tags of a component.
+ 2. Anything placed inside a component's tags is automatically passed to that component as props.children.
+ 3. Children can be strings, numbers, JSX elements, arrays, or even functions.
+
+ #### Example
+ ```
+  function Card({ children }) {
+    return <div className="card">{children}</div>;
+  }
+
+  // Now you can put ANYTHING inside Card Component
+  <Card>
+    <h2>Title</h2>
+    <p>Description here</p>
+  </Card>
+ ```
+
+## 11. What is Props Drilling?
+  1. Prop Drilling is the process of passing data (props) through multiple layers of components to reach a deeply nested child that needs it, even if the intermediate components do not use that data
+
+  ##### NOTE: To avoid props drilling we use context API, React State Management Libraries.
+
+  #### Example
+  ```
+      // ✅ Data starts here in Parent
+      function Parent() {
+        const name = "Alice";
+        const age = 25;
+
+        return (
+          <div>
+            <h1>I am Parent</h1>
+            <Child name={name} age={age} />  {/* passing to Child */}
+          </div>
+        );
+      }
+
+
+      // ✅ Child receives and passes down to SubChild
+      function Child({ name, age }) {
+        return (
+          <div>
+            <h2>I am Child</h2>
+            <SubChild name={name} age={age} />  {/* passing to SubChild */}
+          </div>
+        );
+      }
+
+
+      // ✅ SubChild finally uses the data
+      function SubChild({ name, age }) {
+        return (
+          <div>
+            <h3>I am SubChild</h3>
+            <p>Name: {name}</p>
+            <p>Age: {age}</p>
+          </div>
+        );
+      }
+  ```
+
+
+## 12. What is render prop?
+ 1. Render Prop is when you pass a function as a prop to a component, and that component calls the function to render something.
+
+ #### Example
+ ```
+      // Component accepts a function as a prop
+      function Greet({ render }) {
+        return <div>{render("Alice")}</div>; // calls the function
+      }
+
+      // Passing a function as a prop
+      <Greet render={(name) => <h1>Hello, {name}!</h1>} />
+
+      // Output → Hello, Alice!
+ ```
